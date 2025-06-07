@@ -14,7 +14,7 @@ A simple video player backend built using FFmpeg for video decoding and OpenGL/G
 - **Operating System**: Windows (tested on Windows 10/11)
 - **Compiler**: Microsoft Visual Studio (tested with VS 2022)
 - **Dependencies**:
-  - **FFmpeg**: Libraries (`libavformat`, `libavcodec`, `libavutil`, `libswscale`) and DLLs (`avformat-61.dll`, `avcodec-61.dll`, `avutil-59.dll`, `swscale-8.dll`)
+  - **FFmpeg**: Libraries (`libavformat`, `libavcodec`, `libavutil`, `libswscale`) and DLLs (`avformat-61.dll`, `avcodec-61.dll`, `avutil-59.dll`, `swscale-8.dll`,`avdevice-61`,`avfilter-10.dll`,`swresample-5.dll`,`postproc-58.dll` )
   - **GLEW**: OpenGL Extension Wrangler Library (`glew32.lib`, `glew32.dll`)
   - **GLFW**: Window and input handling (`glfw3.lib`, `glfw3.dll`)
   - **OpenGL**: Provided by Windows (`opengl32.lib`)
@@ -66,15 +66,11 @@ Here’s a step-by-step guide to set up the dependencies in Visual Studio 2022 f
 1. **FFmpeg**:
    - Example path: `C:\ffmpeg`
    - Folders: `C:\ffmpeg\include`, `C:\ffmpeg\lib`, `C:\ffmpeg\bin`
-   - Copy DLLs (`avformat-61.dll`, `avcodec-61.dll`, `avutil-59.dll`, `swscale-8.dll`) from `C:\ffmpeg\bin` to your project’s `x64\Debug` and `x64\Release` directories (e.g., `VideoPlayer-BackendProcessing-OpenGL\x64\Debug`).
+   - Copy DLLs (`avformat-61.dll`, `avcodec-61.dll`, `avutil-59.dll`, `swscale-8.dll`,`avdevice-61`,`avfilter-10.dll`,`swresample-5.dll`,`postproc-58.dll` ) from `C:\ffmpeg\bin` to your project’s `x64\Debug` and `x64\Release` directories (e.g., `VideoPlayer-BackendProcessing-OpenGL\x64\Debug`).
 2. **GLEW**:
    - Example path: `C:\glew`
    - Folders: `C:\glew\include`, `C:\glew\lib\Release\x64`, `C:\glew\bin\Release\x64`
-   - Copy `glew32.dll` from `C:\glew\bin\Release\x64` to `x64\Debug` and `x64\Release`.
-3. **GLFW**:
-   - Example path: `C:\glfw`
-   - Folders: `C:\glfw\include`, `C:\glfw\lib-vc2022`
-   - Copy `glfw3.dll` from the appropriate folder (e.g., `C:\glfw\lib-vc2022`) to `x64\Debug` and `x64\Release`.
+   - Copy `glew32.dll` from `C:\glew\bin\Release\x64` to where your `.sln` file is.
 
 #### Step 2: Create or Open the Project
 1. Open Visual Studio 2022 and create a new C++ project (e.g., Empty Project) or open your existing `VideoPlayer-BackendProcessing-OpenGL.sln`.
@@ -87,17 +83,17 @@ Here’s a step-by-step guide to set up the dependencies in Visual Studio 2022 f
 3. Update the following settings:
    - **C/C++ > General > Additional Include Directories**:
      ```
-     C:\ffmpeg\include;C:\glew\include;C:\glfw\include
+     C:\ffmpeg\include;C:\glew-2.1.0\include;C:\glfw-3.4.bin.WIN64\include
      ```
      Replace paths with your actual folder locations.
    - **Linker > General > Additional Library Directories**:
      ```
-     C:\ffmpeg\lib;C:\glew\lib\Release\x64;C:\glfw\lib-vc2022
+     C:\ffmpeg\lib;C:\glew-2.1.0\lib\Release\x64;C:\glfw-3.4.bin.WIN64\lib-vc2022
      ```
      Adjust paths as needed.
    - **Linker > Input > Additional Dependencies**:
      ```
-     avformat.lib;avcodec.lib;avutil.lib;swscale.lib;glew32.lib;glfw3.lib;opengl32.lib
+     glew32.lib, glfw3.lib, opengl32.lib, user32.lib, gdi32.lib, shell32.lib, avcodec.lib, avdevice.lib, avfilter.lib, avformat.lib, avutil.lib, postproc.lib, swresample.lib, swscale.lib
      ```
 4. Repeat for the `Release` configuration if you plan to build in Release mode (optional for now, as you’re using Debug).
 
@@ -105,10 +101,12 @@ Here’s a step-by-step guide to set up the dependencies in Visual Studio 2022 f
 - Ensure the following DLLs are in `x64\Debug` (relative to your project’s executable):
   - `avformat-61.dll`
   - `avcodec-61.dll`
+  - `avdevice-61.dll`
+  - `avfilter-10.dll`
   - `avutil-59.dll`
   - `swscale-8.dll`
-  - `glew32.dll`
-  - `glfw3.dll`
+  - `swresample-5.dll`
+  - `postproc-58.dll`
 - If Visual Studio can’t find the DLLs at runtime, you’ll get an error like “The application was unable to start correctly (0xc000007b)”. Copying them to the executable directory resolves this.
 
 #### Step 5: Prepare the Video File
